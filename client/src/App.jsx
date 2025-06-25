@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { Search, ShoppingCart, Home, Store, Package, ShoppingBag, User, LogOut, Settings, ListOrdered,X } from 'lucide-react';
+import { Search, ShoppingCart, Home, Store, Package, ShoppingBag, User, LogOut, Settings, ListOrdered, X, Menu } from 'lucide-react';
 
 // Import AuthContext and AuthProvider
 import AuthContext, { AuthProvider } from './context/AuthContext.jsx';
@@ -63,8 +63,136 @@ const ProductCard = ({ product, onAddToCart, onViewDetail }) => (
   </div>
 );
 
-// Header Component - UPDATED for Auth and Admin/MyOrders Links
-const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery }) => {
+// Mobile Sidebar Component
+const MobileSidebar = ({ isOpen, onClose, onNavigate, currentPage }) => {
+  const { user, isAuthenticated, logout } = useContext(AuthContext);
+  const isAdmin = isAuthenticated && user && user.role === 'admin';
+
+  const handleNavigateAndClose = (page) => {
+    onNavigate(page);
+    onClose();
+  };
+
+  const handleLogoutAndClose = () => {
+    logout();
+    onNavigate('home');
+    onClose();
+  };
+
+  return (
+    <>
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={onClose}
+        ></div>
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-indigo-800 text-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } md:hidden`}
+      >
+        <div className="p-4 border-b border-indigo-700 flex justify-between items-center">
+          <h2 className="text-2xl font-bold">Quick-Basket</h2>
+          <button onClick={onClose} className="text-white hover:text-indigo-200">
+            <X size={28} />
+          </button>
+        </div>
+        <nav className="flex flex-col p-4 space-y-3">
+          <button
+            className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+              currentPage === 'home' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
+            }`}
+            onClick={() => handleNavigateAndClose('home')}
+          >
+            <Home size={20} />
+            <span>Home</span>
+          </button>
+          <button
+            className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+              currentPage === 'products' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
+            }`}
+            onClick={() => handleNavigateAndClose('products')}
+          >
+            <Store size={20} />
+            <span>Products</span>
+          </button>
+          {isAuthenticated && (
+            <button
+              className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+                currentPage === 'myOrders' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
+              }`}
+              onClick={() => handleNavigateAndClose('myOrders')}
+            >
+              <ListOrdered size={20} />
+              <span>Orders</span>
+            </button>
+          )}
+          {isAdmin && (
+            <button
+              className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+                currentPage === 'adminDashboard' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
+              }`}
+              onClick={() => handleNavigateAndClose('adminDashboard')}
+            >
+              <Settings size={20} />
+              <span>Admin Dashboard</span>
+            </button>
+          )}
+          <div className="border-t border-indigo-700 my-3"></div>
+          {isAuthenticated ? (
+            <>
+              <button
+                className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+                  currentPage === 'profile' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
+                }`}
+                onClick={() => handleNavigateAndClose('profile')}
+              >
+                <User size={20} />
+                <span>Profile ({user.name.split(' ')[0]})</span>
+              </button>
+              <button
+                className="flex items-center space-x-3 px-4 py-2 rounded-lg text-left bg-red-600 hover:bg-red-700 transition-colors"
+                onClick={handleLogoutAndClose}
+              >
+                <LogOut size={20} />
+                <span>Logout</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+                  currentPage === 'login' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
+                }`}
+                onClick={() => handleNavigateAndClose('login')}
+              >
+                <User size={20} />
+                <span>Login</span>
+              </button>
+              <button
+                className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+                  currentPage === 'register' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
+                }`}
+                onClick={() => handleNavigateAndClose('register')}
+              >
+                <User size={20} />
+                <span>Register</span>
+              </button>
+            </>
+          )}
+        </nav>
+      </div>
+    </>
+  );
+};
+
+
+// Header Component - UPDATED for Auth and Admin/MyOrders Links and Mobile Menu
+const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggleMobileMenu }) => {
   const { cartItems } = useContext(CartContext);
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -78,14 +206,23 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery }) => {
 
   return (
     <header className="bg-gradient-to-r from-indigo-700 to-indigo-900 text-white shadow-lg sticky top-0 z-50">
-      <div className="container mx-auto px-2 sm:px-4 md:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="container mx-auto px-2 sm:px-4 md:px-6 py-3 flex items-center justify-between gap-4">
+        {/* Hamburger Icon for Mobile */}
+        <button
+          className="md:hidden text-white p-2 rounded-md hover:bg-indigo-800 transition-colors"
+          onClick={onToggleMobileMenu}
+        >
+          <Menu size={28} />
+        </button>
+
         <h1
           className="text-2xl sm:text-3xl font-extrabold cursor-pointer hover:text-indigo-200 transition-colors"
           onClick={() => onNavigate('home')}
         >
             Quick-Basket
         </h1>
-        <nav className="flex flex-wrap items-center gap-2 sm:gap-4 justify-center">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex flex-wrap items-center gap-2 sm:gap-4 justify-center">
           <button
             className={`flex items-center space-x-2 text-lg font-semibold px-6 py-2 rounded-full transition-colors border-2 ${
               currentPage === 'home'
@@ -135,8 +272,8 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery }) => {
             </button>
           )}
         </nav>
-        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 w-full sm:w-auto">
-          {/* Search Bar */}
+        <div className="flex items-center gap-2 sm:gap-6">
+          {/* Search Bar - visible on all screen sizes but layout adjusts */}
           <div className="relative w-full sm:w-64">
             <input
               type="text"
@@ -159,10 +296,10 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery }) => {
             )}
           </button>
 
-          {/* Authentication Links */}
+          {/* Authentication Links (Desktop Only) */}
           {isAuthenticated ? (
-            <div className="flex items-center space-x-3">
-              <span className="text-indigo-100 hidden md:inline-block">Hello, {user.name.split(' ')[0]}</span>
+            <div className="hidden md:flex items-center space-x-3">
+              <span className="text-indigo-100 hidden lg:inline-block">Hello, {user.name.split(' ')[0]}</span>
               <button
                 className="relative p-3 rounded-full bg-indigo-800 hover:bg-indigo-700 transition-colors group"
                 onClick={() => onNavigate('profile')}
@@ -183,7 +320,7 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery }) => {
               </button>
             </div>
           ) : (
-            <div className="flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-4">
               <button
                 className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors ${
                   currentPage === 'login' ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-700 text-indigo-100'
@@ -378,30 +515,6 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
       onChange={e => setSearchQuery(e.target.value)}
       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
     />
-  </div>
-  <div className="flex flex-wrap gap-2 items-center">
-    <label htmlFor="category" className="font-semibold text-gray-700">Category:</label>
-    <select
-      id="category"
-      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-      value={selectedCategory}
-      onChange={(e) => setSelectedCategory(e.target.value)}
-    >
-      {categories.map(category => (
-        <option key={category} value={category}>{category}</option>
-      ))}
-    </select>
-    <label htmlFor="sort" className="font-semibold text-gray-700 ml-2">Sort by:</label>
-    <select
-      id="sort"
-      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-      value={sortOrder}
-      onChange={(e) => setSortOrder(e.target.value)}
-    >
-      <option value="default">Default</option>
-      <option value="price-asc">Price: Low to High</option>
-      <option value="price-desc">Price: High to Low</option>
-    </select>
   </div>
 </div>
       {filteredProducts.length === 0 ? (
@@ -815,11 +928,15 @@ function PageContent({
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
       const [searchQuery, setSearchQuery] = useState('');
+      const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // New state for mobile menu
 
       // Function to simulate navigation
       const navigateTo = (page, productId = null) => {
         setCurrentPage(page);
         setSelectedProductId(productId);
+        if (isMobileMenuOpen) { // Close mobile menu on navigation
+            setIsMobileMenuOpen(false);
+        }
       };
 
       // Fetch products from the backend API on component mount
@@ -851,6 +968,13 @@ function PageContent({
                 onNavigate={navigateTo}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
+                onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} // Pass toggle function
+              />
+              <MobileSidebar
+                isOpen={isMobileMenuOpen}
+                onClose={() => setIsMobileMenuOpen(false)}
+                onNavigate={navigateTo}
+                currentPage={currentPage}
               />
               <main className="flex-grow py-8">
                 <PageContent
