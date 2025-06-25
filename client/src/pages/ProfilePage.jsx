@@ -146,13 +146,13 @@ const ProfilePage = ({ onNavigate }) => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] bg-gray-100 p-4">
-      <div className="bg-white rounded-xl shadow-2xl p-8 md:p-10 w-full max-w-md transform transition-all duration-300 hover:scale-[1.01]">
-        <h2 className="text-4xl font-extrabold text-indigo-700 mb-8 text-center">User Profile</h2>
+    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] bg-gray-100 px-2 sm:px-4 py-6 md:py-12">
+      <div className="bg-white rounded-xl shadow-2xl p-4 sm:p-8 md:p-10 w-full max-w-xs sm:max-w-md md:max-w-lg transform transition-all duration-300 hover:scale-[1.01]">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-indigo-700 mb-6 sm:mb-8 text-center">User Profile</h2>
 
         {message && (
           <div
-            className={`p-4 mb-6 rounded-lg text-center ${
+            className={`p-3 sm:p-4 mb-4 sm:mb-6 rounded-lg text-center ${
               message.includes('success') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
             }`}
           >
@@ -162,14 +162,14 @@ const ProfilePage = ({ onNavigate }) => {
 
         <form
           onSubmit={isEditing ? handleUpdateProfile : (e) => e.preventDefault()}
-          className="space-y-6"
+          className="space-y-4 sm:space-y-6"
         >
           <div className="relative">
             <User size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Full Name"
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
               value={name}
               onChange={(e) => setName(e.target.value)}
               readOnly={!isEditing}
@@ -182,7 +182,7 @@ const ProfilePage = ({ onNavigate }) => {
             <input
               type="email"
               placeholder="Email Address"
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               readOnly={!isEditing}
@@ -197,7 +197,7 @@ const ProfilePage = ({ onNavigate }) => {
                 <input
                   type="password"
                   placeholder="New Password (optional)"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+                  className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="new-password"
@@ -209,7 +209,7 @@ const ProfilePage = ({ onNavigate }) => {
                 <input
                   type="password"
                   placeholder="Confirm New Password"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+                  className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   autoComplete="new-password"
@@ -218,12 +218,12 @@ const ProfilePage = ({ onNavigate }) => {
             </>
           )}
 
-          <div className="flex justify-end space-x-4">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
             {!isEditing ? (
               <button
                 type="button"
                 onClick={() => setIsEditing(true)}
-                className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold text-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 flex items-center space-x-2"
+                className="bg-indigo-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-bold text-base sm:text-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 flex items-center space-x-2"
               >
                 <Edit size={20} />
                 <span>Edit Profile</span>
@@ -232,7 +232,7 @@ const ProfilePage = ({ onNavigate }) => {
               <>
                 <button
                   type="submit"
-                  className="bg-green-600 text-white px-6 py-3 rounded-xl font-bold text-lg shadow-md hover:bg-green-700 transition-colors duration-200 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-bold text-base sm:text-lg shadow-md hover:bg-green-700 transition-colors duration-200 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={loadingUpdate}
                 >
                   {loadingUpdate ? <Loader size={20} className="animate-spin" /> : <Save size={20} />}
@@ -250,7 +250,7 @@ const ProfilePage = ({ onNavigate }) => {
                     setConfirmPassword('');
                     setMessage('');
                   }}
-                  className="bg-gray-400 text-white px-6 py-3 rounded-xl font-bold text-lg shadow-md hover:bg-gray-500 transition-colors duration-200 flex items-center space-x-2"
+                  className="bg-gray-400 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-bold text-base sm:text-lg shadow-md hover:bg-gray-500 transition-colors duration-200 flex items-center space-x-2"
                 >
                   <XCircle size={20} />
                   <span>Cancel</span>
