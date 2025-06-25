@@ -32,7 +32,7 @@ const ProductCard = ({ product, onAddToCart, onViewDetail }) => (
       <img
         src={product.imageUrl}
         alt={product.name}
-        className="w-full h-48 object-cover rounded-t-xl"
+        className="w-full h-40 xs:h-48 sm:h-56 md:h-64 object-cover rounded-t-xl"
         onError={(e) => { e.target.onerror = null; e.target.src = `https://placehold.co/400x400/94A3B8/FFFFFF?text=${product.name.split(' ').join('+')}`; }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
@@ -78,14 +78,14 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery }) => {
 
   return (
     <header className="bg-gradient-to-r from-indigo-700 to-indigo-900 text-white shadow-lg sticky top-0 z-50">
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="container mx-auto px-2 sm:px-4 md:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
         <h1
-          className="text-3xl font-extrabold cursor-pointer hover:text-indigo-200 transition-colors"
+          className="text-2xl sm:text-3xl font-extrabold cursor-pointer hover:text-indigo-200 transition-colors"
           onClick={() => onNavigate('home')}
         >
             Quick-Basket
         </h1>
-        <nav className="flex items-center space-x-4">
+        <nav className="flex flex-wrap items-center gap-2 sm:gap-4 justify-center">
           <button
             className={`flex items-center space-x-2 text-lg font-semibold px-6 py-2 rounded-full transition-colors border-2 ${
               currentPage === 'home'
@@ -135,15 +135,15 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery }) => {
             </button>
           )}
         </nav>
-        <div className="flex items-center space-x-6">
-          {/* Search Bar (conceptual, can be expanded) */}
-          <div className="relative">
+        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 w-full sm:w-auto">
+          {/* Search Bar */}
+          <div className="relative w-full sm:w-64">
             <input
               type="text"
               placeholder="Search products..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="px-4 py-2 rounded-full bg-indigo-800 text-white placeholder-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-300 w-64 md:w-auto"
+              className="w-full px-4 py-2 rounded-full bg-indigo-800 text-white placeholder-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-300"
             />
             <Search size={20} className="absolute right-3 top-1/2 -translate-y-1/2 text-indigo-300" />
           </div>
@@ -213,7 +213,7 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery }) => {
 // Footer Component (remains the same)
 const Footer = () => (
   <footer className="bg-gray-800 text-gray-300 py-10 mt-20">
-    <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="container mx-auto px-2 sm:px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
         <h4 className="text-xl font-bold text-white mb-4">Quick-Basket</h4>
         <p className="text-sm">Your one-stop shop for all your needs. Quality products, excellent service.</p>
@@ -268,7 +268,7 @@ const HomePage = ({ products, onAddToCart, onViewDetail, onNavigate, searchQuery
     </section>
       <section className="mb-16">
         <h3 className="text-4xl font-bold text-gray-800 mb-10 text-center">Featured Products</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {products.length > 0 ? featuredProducts.map((product) => (
             <ProductCard
               key={product._id}
@@ -333,6 +333,7 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
   return (
     <div className="container mx-auto px-6 py-12">
       <h2 className="text-5xl font-extrabold text-gray-800 mb-12 text-center">Our Products</h2>
+
       <div className="flex flex-wrap justify-between items-center bg-gray-50 rounded-xl p-6 shadow-sm mb-10">
         <div className="flex-grow flex items-center space-x-4 mb-4 md:mb-0">
           <input
@@ -368,12 +369,48 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
           </select>
         </div>
       </div>
+      <div className="flex flex-wrap justify-between items-center bg-gray-50 rounded-xl p-4 sm:p-6 shadow-sm mb-6 gap-4">
+  <div className="flex-grow flex items-center space-x-2 mb-2 md:mb-0">
+    <input
+      type="text"
+      placeholder="Search by name..."
+      value={searchQuery}
+      onChange={e => setSearchQuery(e.target.value)}
+      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    />
+  </div>
+  <div className="flex flex-wrap gap-2 items-center">
+    <label htmlFor="category" className="font-semibold text-gray-700">Category:</label>
+    <select
+      id="category"
+      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+      value={selectedCategory}
+      onChange={(e) => setSelectedCategory(e.target.value)}
+    >
+      {categories.map(category => (
+        <option key={category} value={category}>{category}</option>
+      ))}
+    </select>
+    <label htmlFor="sort" className="font-semibold text-gray-700 ml-2">Sort by:</label>
+    <select
+      id="sort"
+      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+      value={sortOrder}
+      onChange={(e) => setSortOrder(e.target.value)}
+    >
+      <option value="default">Default</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+    </select>
+  </div>
+</div>
+ 8d35a8b (Update client folder)
       {filteredProducts.length === 0 ? (
         <div className="text-center text-gray-600 text-xl py-20">
           No products found matching your criteria.
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {filteredProducts.map((product) => (
             <ProductCard
               key={product._id}
