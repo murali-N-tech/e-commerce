@@ -9,6 +9,8 @@ const {
   updateUserProfile,
   getUsers,         // <-- ADD
   deleteUser,       // <-- ADD
+  addOrderItems,    // <-- ADD
+  getOrders,        // <-- ADD
 } = require('../controllers/userController'); // Import user controller functions
 const { protect } = require('../middleware/authMiddleware'); // Import authentication middleware
 const { admin } = require('../middleware/adminMiddleware');
@@ -26,6 +28,11 @@ router.route('/profile')
 // Admin: Get all users & delete user
 router.route('/').get(protect, admin, getUsers); // GET /api/users (admin)
 router.route('/:id').delete(protect, admin, deleteUser); // DELETE /api/users/:id (admin)
+
+// Order routes
+router.route('/')
+  .post(protect, addOrderItems)
+  .get(protect, admin, getOrders); // GET /api/orders (admin only)
 
 // Example admin-protected route (optional, for future use)
 // router.get('/admin-dashboard', protect, admin, (req, res) => {
