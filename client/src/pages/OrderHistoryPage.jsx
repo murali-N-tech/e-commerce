@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthContext.jsx';
 import orderService from '../services/orderService.js';
-import { Loader, XCircle, Package, CalendarDays, DollarSign, Truck, Eye, CheckCircle } from 'lucide-react'; // Icons
+import { Loader, XCircle, Package, Eye, CheckCircle } from 'lucide-react';
 
 const OrderHistoryPage = ({ onNavigate }) => {
   const { user, isAuthenticated, loading: authLoading } = useContext(AuthContext);
@@ -66,76 +66,76 @@ const OrderHistoryPage = ({ onNavigate }) => {
   }
 
   return (
-    <div className="container mx-auto px-6 py-12">
-      <h2 className="text-5xl font-extrabold text-gray-800 mb-12 text-center">
+    <div className="container mx-auto px-2 sm:px-4 md:px-6 py-6 md:py-12">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-800 mb-8 sm:mb-12 text-center">
         {user && user.role === 'admin' ? 'All Orders' : 'My Orders'}
       </h2>
 
       {orders.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-md p-10 text-center flex flex-col items-center">
-          <Package size={80} className="text-gray-400 mb-6" />
-          <p className="text-gray-600 text-2xl font-semibold mb-6">
+        <div className="bg-white rounded-xl shadow-md p-6 sm:p-10 text-center flex flex-col items-center">
+          <Package size={60} className="text-gray-400 mb-4 sm:mb-6" />
+          <p className="text-gray-600 text-lg sm:text-2xl font-semibold mb-4 sm:mb-6">
             {user && user.role === 'admin' ? 'No orders found.' : 'You have not placed any orders yet.'}
           </p>
           <button
             onClick={() => onNavigate('products')}
-            className="bg-indigo-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-indigo-700 transition-colors duration-200"
+            className="bg-indigo-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-indigo-700 transition-colors duration-200"
           >
             Start Shopping
           </button>
         </div>
       ) : (
-        <div className="overflow-x-auto bg-white rounded-xl shadow-lg p-4">
-          <table className="min-w-full divide-y divide-gray-200">
+        <div className="overflow-x-auto bg-white rounded-xl shadow-lg p-2 sm:p-4">
+          <table className="min-w-[600px] w-full divide-y divide-gray-200 text-xs sm:text-sm">
             <thead className="bg-gray-50">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">ID</th>
                 {user && user.role === 'admin' && (
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                  <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">User</th>
                 )}
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Delivered</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">Date</th>
+                <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">Total</th>
+                <th className="px-2 sm:px-4 py-2 text-center font-medium text-gray-500 uppercase">Paid</th>
+                <th className="px-2 sm:px-4 py-2 text-center font-medium text-gray-500 uppercase">Delivered</th>
+                <th className="px-2 sm:px-4 py-2 text-right font-medium text-gray-500 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {orders.map((order) => (
                 <tr key={order._id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 truncate w-32">{order._id}</td>
+                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-gray-900 truncate w-32">{order._id}</td>
                   {user && user.role === 'admin' && (
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-gray-700">
                       {order.user ? order.user.name : 'N/A'}
                     </td>
                   )}
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-gray-500">
                     {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-gray-500">
                     ₹{order.totalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-center">
                     {order.isPaid ? (
-                      <CheckCircle size={20} className="text-green-600 mx-auto" title={`Paid on ${new Date(order.paidAt).toLocaleDateString()}`} />
+                      <CheckCircle size={18} className="text-green-600 mx-auto" title={`Paid on ${new Date(order.paidAt).toLocaleDateString()}`} />
                     ) : (
-                      <XCircle size={20} className="text-red-600 mx-auto" title="Not Paid" />
+                      <XCircle size={18} className="text-red-600 mx-auto" title="Not Paid" />
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-center">
                     {order.isDelivered ? (
-                      <CheckCircle size={20} className="text-green-600 mx-auto" title={`Delivered on ${new Date(order.deliveredAt).toLocaleDateString()}`} />
+                      <CheckCircle size={18} className="text-green-600 mx-auto" title={`Delivered on ${new Date(order.deliveredAt).toLocaleDateString()}`} />
                     ) : (
-                      <XCircle size={20} className="text-red-600 mx-auto" title="Not Delivered" />
+                      <XCircle size={18} className="text-red-600 mx-auto" title="Not Delivered" />
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-right font-medium">
                     <button
                       onClick={() => onNavigate('orderDetail', order._id)}
-                      className="text-indigo-600 hover:text-indigo-900 p-2 rounded-full hover:bg-indigo-100 transition-colors"
+                      className="text-indigo-600 hover:text-indigo-900 p-1 sm:p-2 rounded-full hover:bg-indigo-100 transition-colors"
                       title="View Order Details"
                     >
-                      <Eye size={18} />
+                      <Eye size={16} />
                     </button>
                   </td>
                 </tr>
@@ -147,7 +147,7 @@ const OrderHistoryPage = ({ onNavigate }) => {
       <div className="mt-8 text-center">
         <button
           onClick={() => onNavigate('home')}
-          className="bg-indigo-600 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-indigo-700 transition-colors duration-200"
+          className="bg-indigo-600 text-white px-6 py-3 rounded-full text-base sm:text-lg font-semibold hover:bg-indigo-700 transition-colors duration-200"
         >
           Back to Home
         </button>
