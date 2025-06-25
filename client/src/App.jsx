@@ -333,7 +333,6 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
   return (
     <div className="container mx-auto px-6 py-12">
       <h2 className="text-5xl font-extrabold text-gray-800 mb-12 text-center">Our Products</h2>
-<<<<<<< HEAD
 
       <div className="flex flex-wrap justify-between items-center bg-gray-50 rounded-xl p-6 shadow-sm mb-10">
         <div className="flex-grow flex items-center space-x-4 mb-4 md:mb-0">
@@ -370,8 +369,6 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
           </select>
         </div>
       </div>
-=======
->>>>>>> 8d35a8b (Update client folder)
       <div className="flex flex-wrap justify-between items-center bg-gray-50 rounded-xl p-4 sm:p-6 shadow-sm mb-6 gap-4">
   <div className="flex-grow flex items-center space-x-2 mb-2 md:mb-0">
     <input
@@ -407,10 +404,6 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
     </select>
   </div>
 </div>
-<<<<<<< HEAD
- 8d35a8b (Update client folder)
-=======
->>>>>>> 8d35a8b (Update client folder)
       {filteredProducts.length === 0 ? (
         <div className="text-center text-gray-600 text-xl py-20">
           No products found matching your criteria.
