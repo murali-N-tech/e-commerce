@@ -1,83 +1,93 @@
-import React, { useEffect, useState, useContext } from 'react';
-import AuthContext from '../context/AuthContext.jsx';
-import userService from '../services/userService.js';
-import { Loader, XCircle, Trash2 } from 'lucide-react';
+// client/src/pages/LoginPage.jsx
 
-const ManageUsersPage = () => {
-  const { user, isAuthenticated } = useContext(AuthContext);
-  const [users, setUsers] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(true);
-  const [errorUsers, setErrorUsers] = useState(null);
+import React, { useState, useContext, useEffect } from 'react';
+import AuthContext from '../context/AuthContext.jsx';
+import { User, Lock, ArrowRight, Loader } from 'lucide-react';
+
+const LoginPage = ({ onNavigate }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const { login, loading, user, isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      setLoadingUsers(true);
-      setErrorUsers(null);
-      try {
-        const data = await userService.getAllUsers(user.token);
-        setUsers(data);
-      } catch (err) {
-        setErrorUsers(err.message || 'Failed to fetch users.');
-      } finally {
-        setLoadingUsers(false);
-      }
-    };
-    if (isAuthenticated && user?.role === 'admin') fetchUsers();
-  }, [isAuthenticated, user]);
+    if (isAuthenticated) {
+      onNavigate('home');
+    }
+  }, [isAuthenticated, onNavigate]);
 
-  const handleDelete = async (userId) => {
-    if (window.confirm('Are you sure you want to delete this user?')) {
-      try {
-        await userService.deleteUser(userId, user.token);
-        setUsers(users.filter(u => u._id !== userId));
-      } catch (err) {
-        setErrorUsers(err.message || 'Failed to delete user.');
-      }
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setMessage('');
+    if (!email || !password) {
+      setMessage('Please enter both email and password.');
+      return;
+    }
+    try {
+      await login(email, password);
+      setMessage('Login successful! Redirecting...');
+    } catch (error) {
+      setMessage(error.message || 'Login failed. Please check your credentials.');
     }
   };
 
-  if (loadingUsers) return <div className="flex items-center justify-center min-h-[200px] text-indigo-700 text-xl"><Loader size={24} className="animate-spin mr-2" /> Loading users...</div>;
-  if (errorUsers) return <div className="text-center text-red-600 text-lg"><XCircle size={24} className="inline-block mr-2" /> {errorUsers}</div>;
-
   return (
-    <div className="container mx-auto px-2 sm:px-4 md:px-6 py-6 md:py-12">
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center">Manage Users</h2>
-      <div className="overflow-x-auto bg-white rounded-xl shadow-lg p-2 sm:p-4">
-        <table className="min-w-[600px] w-full divide-y divide-gray-200 text-xs sm:text-sm">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">ID</th>
-              <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">Name</th>
-              <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">Email</th>
-              <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">Role</th>
-              <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {users.map(u => (
-              <tr key={u._id}>
-                <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{u._id}</td>
-                <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{u.name}</td>
-                <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{u.email}</td>
-                <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{u.role}</td>
-                <td className="px-2 sm:px-4 py-2 whitespace-nowrap">
-                  {u._id !== user._id && (
-                    <button
-                      onClick={() => handleDelete(u._id)}
-                      className="text-red-600 hover:text-red-900 p-1 sm:p-2 rounded-full hover:bg-red-100 transition-colors"
-                      title="Delete User"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] bg-gray-100 px-2 sm:px-4 py-6 md:py-12">
+      <div className="bg-white rounded-xl shadow-2xl p-4 sm:p-8 md:p-10 w-full max-w-xs sm:max-w-md md:max-w-lg transform transition-all duration-300 hover:scale-[1.01]">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-indigo-700 mb-6 sm:mb-8 text-center">Login</h2>
+
+        {message && (
+          <div className={`p-3 sm:p-4 mb-4 sm:mb-6 rounded-lg text-center ${message.includes('success') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+            {message}
+          </div>
+        )}
+
+        <form onSubmit={submitHandler} className="space-y-4 sm:space-y-6">
+          <div className="relative">
+            <User size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="email"
+              placeholder="Email Address"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-800"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="relative">
+            <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-800"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-2 sm:py-3 rounded-xl font-bold text-base sm:text-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading}
+          >
+            {loading ? <Loader size={20} className="animate-spin" /> : <ArrowRight size={20} />}
+            <span>{loading ? 'Logging In...' : 'Login'}</span>
+          </button>
+        </form>
+
+        <div className="mt-6 sm:mt-8 text-center text-gray-600 text-sm sm:text-base">
+          New Customer?{' '}
+          <button
+            onClick={() => onNavigate('register')}
+            className="text-indigo-600 font-semibold hover:underline bg-transparent p-0 border-none focus:outline-none"
+          >
+            Register
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ManageUsersPage;
+export default LoginPage;
