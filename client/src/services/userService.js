@@ -1,7 +1,7 @@
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = 'https://e-commerce-slp6.onrender.com/api/users';
 
 const getAllUsers = async (token) => {
-  const res = await fetch(`${API}/users`, {
+  const res = await fetch(API_URL, {
     headers: { Authorization: `Bearer ${token}` }
   });
   if (!res.ok) throw new Error('Failed to fetch users');
@@ -9,7 +9,7 @@ const getAllUsers = async (token) => {
 };
 
 const deleteUser = async (userId, token) => {
-  const res = await fetch(`${API}/users/${userId}`, {
+  const res = await fetch(`${API_URL}/users/${userId}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` }
   });
