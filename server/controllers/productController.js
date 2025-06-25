@@ -7,7 +7,7 @@ const Product = require('../models/Product');
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 8; // Number of products per page
+  const pageSize = 1000000000; // Number of products per page
   const page = Number(req.query.pageNumber) || 1; // Current page number, default to 1
 
   // Keyword for search (case-insensitive)
