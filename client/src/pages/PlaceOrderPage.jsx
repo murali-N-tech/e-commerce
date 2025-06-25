@@ -117,11 +117,11 @@ const PlaceOrderPage = ({ onNavigate }) => {
   }
 
   return (
-    <div className="container mx-auto px-6 py-12">
-      <h2 className="text-5xl font-extrabold text-gray-800 mb-12 text-center">Place Order</h2>
+    <div className="container mx-auto px-2 sm:px-4 md:px-6 py-6 md:py-12">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-800 mb-8 sm:mb-12 text-center">Place Order</h2>
 
       {message && (
-        <div className={`p-4 mb-6 rounded-lg text-center ${message.includes('successfully') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+        <div className={`p-3 sm:p-4 mb-4 sm:mb-6 rounded-lg text-center ${message.includes('successfully') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
           {message}
           {orderCreated && message.includes('successfully') && (
             <p className="mt-2">
@@ -136,19 +136,20 @@ const PlaceOrderPage = ({ onNavigate }) => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white rounded-2xl shadow-xl p-8 space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
+        {/* Left: Shipping, Payment, Items */}
+        <div className="lg:col-span-2 bg-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-8">
           {/* Shipping Info */}
           <div>
-            <h3 className="text-3xl font-bold text-gray-800 mb-4 border-b pb-3 flex items-center">
-              <MapPin size={24} className="mr-2 text-indigo-600" /> Shipping
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 border-b pb-2 flex items-center">
+              <MapPin size={20} className="mr-2 text-indigo-600" /> Shipping
             </h3>
-            <p className="text-gray-700 text-lg">
+            <p className="text-gray-700 text-base sm:text-lg">
               Address: {shippingAddress.address}, {shippingAddress.city}, {shippingAddress.postalCode}, {shippingAddress.country}
             </p>
             <button
               onClick={() => onNavigate('shipping')}
-              className="mt-3 text-indigo-600 hover:underline text-sm flex items-center"
+              className="mt-2 text-indigo-600 hover:underline text-sm flex items-center"
             >
               <Edit size={16} className="mr-1" /> Edit Shipping Address
             </button>
@@ -156,13 +157,13 @@ const PlaceOrderPage = ({ onNavigate }) => {
 
           {/* Payment Method */}
           <div>
-            <h3 className="text-3xl font-bold text-gray-800 mb-4 border-b pb-3 flex items-center">
-              <CreditCard size={24} className="mr-2 text-indigo-600" /> Payment Method
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 border-b pb-2 flex items-center">
+              <CreditCard size={20} className="mr-2 text-indigo-600" /> Payment Method
             </h3>
-            <p className="text-gray-700 text-lg">Method: {paymentMethod}</p>
+            <p className="text-gray-700 text-base sm:text-lg">Method: {paymentMethod}</p>
             <button
               onClick={() => onNavigate('payment')}
-              className="mt-3 text-indigo-600 hover:underline text-sm flex items-center"
+              className="mt-2 text-indigo-600 hover:underline text-sm flex items-center"
             >
               <Edit size={16} className="mr-1" /> Edit Payment Method
             </button>
@@ -170,26 +171,28 @@ const PlaceOrderPage = ({ onNavigate }) => {
 
           {/* Order Items */}
           <div>
-            <h3 className="text-3xl font-bold text-gray-800 mb-4 border-b pb-3 flex items-center">
-              <ShoppingBag size={24} className="mr-2 text-indigo-600" /> Order Items
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-3 border-b pb-2 flex items-center">
+              <ShoppingBag size={20} className="mr-2 text-indigo-600" /> Order Items
             </h3>
             {cartItems.length === 0 ? (
-              <p className="text-gray-600 text-lg">Your cart is empty.</p>
+              <p className="text-gray-600 text-base sm:text-lg">Your cart is empty.</p>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {cartItems.map((item) => (
-                  <div key={item._id} className="flex items-center space-x-4 p-4 border rounded-lg bg-gray-50">
+                  <div key={item._id} className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 p-3 sm:p-4 border rounded-lg bg-gray-50">
                     <img
                       src={item.imageUrl}
                       alt={item.name}
-                      className="w-20 h-20 object-cover rounded-lg shadow-sm"
+                      className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg shadow-sm mb-2 sm:mb-0"
                       onError={(e) => { e.target.onerror = null; e.target.src = `https://placehold.co/80x80/E2E8F0/64748B?text=No+Img`; }}
                     />
-                    <div className="flex-grow">
-                      <h4 className="text-xl font-semibold text-gray-800">{item.name}</h4>
-                      <p className="text-gray-600 text-md">{item.quantity} x ${item.price.toFixed(2)}</p>
+                    <div className="flex-grow text-center sm:text-left">
+                      <h4 className="text-base sm:text-lg font-semibold text-gray-800">{item.name}</h4>
+                      <p className="text-gray-600 text-sm sm:text-md">{item.quantity} x ₹{item.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</p>
+                      <span className="text-base sm:text-lg font-bold text-indigo-700">
+                        ₹{(item.quantity * item.price).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                      </span>
                     </div>
-                    <span className="text-lg font-bold text-indigo-700">${(item.quantity * item.price).toFixed(2)}</span>
                   </div>
                 ))}
               </div>
@@ -197,10 +200,10 @@ const PlaceOrderPage = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Order Summary / Place Order Card */}
-        <div className="lg:col-span-1 bg-white rounded-2xl shadow-xl p-8 sticky top-32 h-fit">
-          <h3 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-4">Order Summary</h3>
-          <div className="space-y-4 text-lg">
+        {/* Right: Order Summary / Place Order Card */}
+        <div className="lg:col-span-1 bg-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 sticky top-32 h-fit mt-6 lg:mt-0">
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 border-b pb-2 sm:pb-4">Order Summary</h3>
+          <div className="space-y-3 sm:space-y-4 text-base sm:text-lg">
             <div className="flex justify-between">
               <span>Items:</span>
               <span className="font-semibold">₹{itemsPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
@@ -213,14 +216,14 @@ const PlaceOrderPage = ({ onNavigate }) => {
               <span>Tax:</span>
               <span className="font-semibold">₹{taxPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
             </div>
-            <div className="flex justify-between text-2xl font-extrabold text-indigo-700 border-t pt-4 mt-4">
+            <div className="flex justify-between text-lg sm:text-2xl font-extrabold text-indigo-700 border-t pt-3 sm:pt-4 mt-3 sm:mt-4">
               <span>Total:</span>
               <span>₹{totalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
             </div>
           </div>
           <button
             onClick={placeOrderHandler}
-            className="mt-8 w-full bg-indigo-600 text-white px-8 py-4 rounded-full text-xl font-bold shadow-lg hover:bg-indigo-700 hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-8 w-full bg-indigo-600 text-white px-4 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-xl font-bold shadow-lg hover:bg-indigo-700 hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={loadingPlaceOrder || cartItems.length === 0 || !shippingAddress || !paymentMethod}
           >
             {loadingPlaceOrder ? <Loader size={24} className="animate-spin mr-2" /> : <CheckCircle size={24} />}
@@ -229,7 +232,7 @@ const PlaceOrderPage = ({ onNavigate }) => {
           <button
             type="button"
             onClick={() => onNavigate('payment')}
-            className="w-full mt-4 bg-gray-300 text-gray-800 px-6 py-3 rounded-xl font-bold text-lg shadow-md hover:bg-gray-400 transition-colors duration-200 flex items-center justify-center space-x-2"
+            className="w-full mt-4 bg-gray-300 text-gray-800 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-bold text-base sm:text-lg shadow-md hover:bg-gray-400 transition-colors duration-200 flex items-center justify-center space-x-2"
           >
             <ArrowLeft size={20} />
             <span>Back to Payment</span>
