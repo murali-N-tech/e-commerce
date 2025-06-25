@@ -1,6 +1,6 @@
 // client/src/services/productService.js
 
-const API_URL = 'http://localhost:5000/api/products/';
+const API_URL = 'https://e-commerce-slp6.onrender.com/api/products';
 
 /**
  * Fetches all products.
@@ -22,7 +22,7 @@ const getProducts = async () => {
  * @returns {Promise<object>} The created product.
  */
 const createProduct = async (productData, token) => {
-  const response = await fetch('http://localhost:5000/api/products/admin', {
+  const response = await fetch(`${API_URL}/admin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const updateProduct = async (productId, productData, token) => {
  * @returns {Promise<object>} Success message.
  */
 const deleteProduct = async (productId, token) => {
-  const response = await fetch(`http://localhost:5000/api/products/admin/${productId}`, {
+  const response = await fetch(`${API_URL}/admin/${productId}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${token}`,
