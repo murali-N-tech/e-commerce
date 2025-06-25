@@ -506,17 +506,20 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
           </select>
         </div>
       </div>
+      {/* Removed the duplicate search bar */}
+      {/*
       <div className="flex flex-wrap justify-between items-center bg-gray-50 rounded-xl p-4 sm:p-6 shadow-sm mb-6 gap-4">
-  <div className="flex-grow flex items-center space-x-2 mb-2 md:mb-0">
-    <input
-      type="text"
-      placeholder="Search by name..."
-      value={searchQuery}
-      onChange={e => setSearchQuery(e.target.value)}
-      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-    />
-  </div>
-</div>
+        <div className="flex-grow flex items-center space-x-2 mb-2 md:mb-0">
+          <input
+            type="text"
+            placeholder="Search by name..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+      </div>
+      */}
       {filteredProducts.length === 0 ? (
         <div className="text-center text-gray-600 text-xl py-20">
           No products found matching your criteria.
