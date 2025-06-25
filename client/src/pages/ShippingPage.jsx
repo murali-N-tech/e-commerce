@@ -1,8 +1,8 @@
 // client/src/pages/ShippingPage.jsx
 
 import React, { useState, useEffect, useContext } from 'react';
-import AuthContext from '../context/AuthContext.jsx'; // For authentication check
-import { MapPin, Building, Mail, Flag } from 'lucide-react'; // Icons
+import AuthContext from '../context/AuthContext.jsx';
+import { MapPin, Building, Mail, Flag } from 'lucide-react';
 
 const ShippingPage = ({ onNavigate }) => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -43,27 +43,27 @@ const ShippingPage = ({ onNavigate }) => {
     localStorage.setItem('shippingAddress', JSON.stringify(shippingAddress));
 
     setMessage('Shipping details saved successfully!');
-    onNavigate('payment'); // Navigate to the payment method selection
+    onNavigate('payment');
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] bg-gray-100 p-4">
-      <div className="bg-white rounded-xl shadow-2xl p-8 md:p-10 w-full max-w-md transform transition-all duration-300 hover:scale-[1.01]">
-        <h2 className="text-4xl font-extrabold text-indigo-700 mb-8 text-center">Shipping Address</h2>
+    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] bg-gray-100 px-2 sm:px-4 py-6 md:py-12">
+      <div className="bg-white rounded-xl shadow-2xl p-4 sm:p-8 md:p-10 w-full max-w-xs sm:max-w-md md:max-w-lg transform transition-all duration-300 hover:scale-[1.01]">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-indigo-700 mb-6 sm:mb-8 text-center">Shipping Address</h2>
 
         {message && (
-          <div className={`p-4 mb-6 rounded-lg text-center ${message.includes('successfully') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+          <div className={`p-3 sm:p-4 mb-4 sm:mb-6 rounded-lg text-center ${message.includes('successfully') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
             {message}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           <div className="relative">
             <MapPin size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Address"
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               required
@@ -74,7 +74,7 @@ const ShippingPage = ({ onNavigate }) => {
             <input
               type="text"
               placeholder="City"
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
               value={city}
               onChange={(e) => setCity(e.target.value)}
               required
@@ -85,7 +85,7 @@ const ShippingPage = ({ onNavigate }) => {
             <input
               type="text"
               placeholder="Postal Code"
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
               value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)}
               required
@@ -96,7 +96,7 @@ const ShippingPage = ({ onNavigate }) => {
             <input
               type="text"
               placeholder="Country"
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               required
@@ -104,7 +104,7 @@ const ShippingPage = ({ onNavigate }) => {
           </div>
           <button
             type="submit"
-            className="mt-6 w-full bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold text-lg shadow-md hover:bg-indigo-700 transition-colors duration-200"
+            className="mt-4 w-full bg-indigo-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-bold text-base sm:text-lg shadow-md hover:bg-indigo-700 transition-colors duration-200"
           >
             Continue to Payment
           </button>
