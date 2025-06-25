@@ -64,7 +64,7 @@ const ProductCard = ({ product, onAddToCart, onViewDetail }) => (
 );
 
 // Header Component - UPDATED for Auth and Admin/MyOrders Links
-const Header = ({ currentPage, onNavigate }) => {
+const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery }) => {
   const { cartItems } = useContext(CartContext);
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -75,9 +75,6 @@ const Header = ({ currentPage, onNavigate }) => {
     logout();
     onNavigate('home');
   };
-
-  // Add this state in your App component:
-  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <header className="bg-gradient-to-r from-indigo-700 to-indigo-900 text-white shadow-lg sticky top-0 z-50">
@@ -313,7 +310,7 @@ const HomePage = ({ products, onAddToCart, onViewDetail, onNavigate, searchQuery
 };
 
 // Product Listing Page Component
-const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery }) => {
+const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, setSearchQuery }) => {
   const [sortOrder, setSortOrder] = useState('default');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -341,9 +338,9 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery }
           <input
             type="text"
             placeholder="Search by name..."
-            className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
         <div className="flex flex-wrap space-x-4 items-center">
@@ -672,6 +669,7 @@ function PageContent({
       setError,
       setProducts,
       searchQuery,
+      setSearchQuery, // <-- Add this here
     }) {
       const { addToCart } = useContext(CartContext); // Still using CartContext here
 
@@ -717,7 +715,8 @@ function PageContent({
               products={products}
               onAddToCart={addToCart}
               onViewDetail={(id) => navigateTo('productDetail', id)}
-              searchQuery={searchQuery} // <-- Pass the prop here
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
             />
           );
         case 'productDetail':
@@ -811,7 +810,12 @@ function PageContent({
         <AuthProvider>
           <CartProvider>
             <div className="min-h-screen flex flex-col bg-gray-100 font-sans">
-              <Header currentPage={currentPage} onNavigate={navigateTo} />
+              <Header
+                currentPage={currentPage}
+                onNavigate={navigateTo}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              />
               <main className="flex-grow py-8">
                 <PageContent
                   currentPage={currentPage}
@@ -824,6 +828,7 @@ function PageContent({
                   setError={setError}
                   setProducts={setProducts}
                   searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery} // <-- Add this line
                 />
               </main>
               <Footer />
