@@ -54,7 +54,7 @@ const RegisterPage = ({ onNavigate }) => {
             <input
               type="text"
               placeholder="Full Name"
-              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 placeholder-gray-500" // Added placeholder-gray-500
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -65,7 +65,7 @@ const RegisterPage = ({ onNavigate }) => {
             <input
               type="email"
               placeholder="Email Address"
-              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 placeholder-gray-500" // Added placeholder-gray-500
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -76,7 +76,7 @@ const RegisterPage = ({ onNavigate }) => {
             <input
               type="password"
               placeholder="Password"
-              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 placeholder-gray-500" // Added placeholder-gray-500
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -87,7 +87,7 @@ const RegisterPage = ({ onNavigate }) => {
             <input
               type="password"
               placeholder="Confirm Password"
-              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800"
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 placeholder-gray-500" // Added placeholder-gray-500
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
