@@ -40,44 +40,44 @@ const AdminOrdersPage = ({ onNavigate }) => {
   if (errorOrders) return <div className="text-center text-red-600 text-lg"><XCircle size={24} className="inline-block mr-2" /> {errorOrders}</div>;
 
   return (
-    <div className="container mx-auto px-6 py-12">
-      <h2 className="text-4xl font-bold mb-8">All Orders</h2>
-      <div className="overflow-x-auto bg-white rounded-xl shadow-lg p-4">
-        <table className="min-w-full divide-y divide-gray-200">
+    <div className="container mx-auto px-2 sm:px-4 md:px-6 py-6 md:py-12">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8 text-center">All Orders</h2>
+      <div className="overflow-x-auto bg-white rounded-xl shadow-lg p-2 sm:p-4">
+        <table className="min-w-[600px] w-full divide-y divide-gray-200 text-xs sm:text-sm">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Paid</th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Delivered</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+              <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">ID</th>
+              <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">User</th>
+              <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">Date</th>
+              <th className="px-2 sm:px-4 py-2 text-left font-medium text-gray-500 uppercase">Total</th>
+              <th className="px-2 sm:px-4 py-2 text-center font-medium text-gray-500 uppercase">Paid</th>
+              <th className="px-2 sm:px-4 py-2 text-center font-medium text-gray-500 uppercase">Delivered</th>
+              <th className="px-2 sm:px-4 py-2 text-right font-medium text-gray-500 uppercase">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {orders.map(order => (
               <tr key={order._id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{order._id}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{order.user?.name || 'N/A'}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹{order.totalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center">
-                  {order.isPaid ? <CheckCircle size={20} className="text-green-600 mx-auto" /> : <XCircle size={20} className="text-red-600 mx-auto" />}
+                <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{order._id}</td>
+                <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{order.user?.name || 'N/A'}</td>
+                <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}</td>
+                <td className="px-2 sm:px-4 py-2 whitespace-nowrap">₹{order.totalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+                <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-center">
+                  {order.isPaid ? <CheckCircle size={18} className="text-green-600 mx-auto" /> : <XCircle size={18} className="text-red-600 mx-auto" />}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-center">
+                <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-center">
                   {order.isDelivered
-                    ? <CheckCircle size={20} className="text-green-600 mx-auto" />
-                    : <button onClick={() => handleMarkDelivered(order._id)} className="text-indigo-600 hover:text-indigo-900 p-2 rounded-full hover:bg-indigo-100 transition-colors" title="Mark as Delivered"><Truck size={18} /></button>
+                    ? <CheckCircle size={18} className="text-green-600 mx-auto" />
+                    : <button onClick={() => handleMarkDelivered(order._id)} className="text-indigo-600 hover:text-indigo-900 p-1 sm:p-2 rounded-full hover:bg-indigo-100 transition-colors" title="Mark as Delivered"><Truck size={16} /></button>
                   }
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-right">
                   <button
                     onClick={() => onNavigate('orderDetail', order._id)}
-                    className="text-indigo-600 hover:text-indigo-900 p-2 rounded-full hover:bg-indigo-100 transition-colors"
+                    className="text-indigo-600 hover:text-indigo-900 p-1 sm:p-2 rounded-full hover:bg-indigo-100 transition-colors"
                     title="View Order Details"
                   >
-                    <Eye size={18} />
+                    <Eye size={16} />
                   </button>
                 </td>
               </tr>
