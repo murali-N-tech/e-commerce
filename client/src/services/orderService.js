@@ -1,6 +1,6 @@
 // client/src/services/orderService.js
 
-const API_URL = 'http://localhost:5000/api/orders/'; // Base URL for order API
+const API_URL = 'https://e-commerce-slp6.onrender.com/api/orders'; // Base URL for order API
 
 /**
  * Creates a new order on the backend.
@@ -67,7 +67,7 @@ const getOrderDetails = async (orderId, token) => {
  */
 const getMyOrders = async (token) => {
   try {
-    const response = await fetch(`${API_URL}myorders`, {
+    const response = await fetch(`${API_URL}/myorders`, { // <-- add slash
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`, // Include the user's token
@@ -77,7 +77,7 @@ const getMyOrders = async (token) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Failed to fetch my orders');
+      throw new Error(data.message || `Not Found - /api/orders/myorders`);
     }
 
     return data;
