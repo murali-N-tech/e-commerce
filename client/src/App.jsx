@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { Search, ShoppingCart, Home, Store, Package, ShoppingBag, User, LogOut, Settings, ListOrdered, X, Menu } from 'lucide-react';
+import { Search, ShoppingCart, Home, Store, Package, ShoppingBag, User, LogOut, Settings, ListOrdered, X, Menu } from 'lucide-react'; // Added Menu for mobile sidebar
 
 // Import AuthContext and AuthProvider
 import AuthContext, { AuthProvider } from './context/AuthContext.jsx';
@@ -25,7 +25,7 @@ import productService from './services/productService.js';
 // import orderService from './services/orderService.js'; // Removed as it's not directly used here
 
 
-// Product Card Component (remains the same)
+// Product Card Component (Corrected for button placement)
 const ProductCard = ({ product, onAddToCart, onViewDetail }) => (
   <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col transform hover:-translate-y-1">
     <div className="relative overflow-hidden">
@@ -44,16 +44,17 @@ const ProductCard = ({ product, onAddToCart, onViewDetail }) => (
         </button>
       </div>
     </div>
-    <div className="p-5 flex flex-col flex-grow">
+    <div className="p-5 flex flex-col flex-grow"> {/* Use flex-col and flex-grow here */}
       <h3 className="text-xl font-bold text-gray-800 mb-2 truncate">{product.name}</h3>
       <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
-      <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
-        <span className="text-2xl font-extrabold text-indigo-700">
+      {/* This div will push itself to the bottom using mt-auto */}
+      <div className="flex flex-col mt-auto pt-3 border-t border-gray-100">
+        <span className="text-2xl font-extrabold text-indigo-700 mb-3"> {/* Added mb-3 for spacing */}
           ₹{product.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
         </span>
         <button
           onClick={() => onAddToCart(product)}
-          className="bg-indigo-600 text-white px-5 py-2 rounded-full shadow-md hover:bg-indigo-700 transition-colors duration-200 flex items-center space-x-2"
+          className="bg-indigo-600 text-white px-5 py-2 rounded-full shadow-md hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center space-x-2 w-full" // Added w-full and justify-center
         >
           <ShoppingCart size={18} />
           <span>Add to Cart</span>
@@ -63,7 +64,7 @@ const ProductCard = ({ product, onAddToCart, onViewDetail }) => (
   </div>
 );
 
-// Mobile Sidebar Component
+// Mobile Sidebar Component (remains the same as previous correction)
 const MobileSidebar = ({ isOpen, onClose, onNavigate, currentPage }) => {
   const { user, isAuthenticated, logout } = useContext(AuthContext);
   const isAdmin = isAuthenticated && user && user.role === 'admin';
@@ -191,7 +192,7 @@ const MobileSidebar = ({ isOpen, onClose, onNavigate, currentPage }) => {
 };
 
 
-// Header Component - UPDATED for Auth and Admin/MyOrders Links and Mobile Menu
+// Header Component - UPDATED for Auth and Admin/MyOrders Links and Mobile Menu (remains the same as previous correction)
 const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggleMobileMenu }) => {
   const { cartItems } = useContext(CartContext);
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -376,7 +377,7 @@ const Footer = () => (
   </footer>
 );
 
-// Homepage Component
+// Homepage Component (remains the same as previous correction)
 const HomePage = ({ products, onAddToCart, onViewDetail, onNavigate, searchQuery }) => {
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -446,7 +447,7 @@ const HomePage = ({ products, onAddToCart, onViewDetail, onNavigate, searchQuery
   );
 };
 
-// Product Listing Page Component
+// Product Listing Page Component (remains the same as previous correction)
 const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, setSearchQuery }) => {
   const [sortOrder, setSortOrder] = useState('default');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -506,20 +507,7 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
           </select>
         </div>
       </div>
-      {/* Removed the duplicate search bar */}
-      {/*
-      <div className="flex flex-wrap justify-between items-center bg-gray-50 rounded-xl p-4 sm:p-6 shadow-sm mb-6 gap-4">
-        <div className="flex-grow flex items-center space-x-2 mb-2 md:mb-0">
-          <input
-            type="text"
-            placeholder="Search by name..."
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
-      </div>
-      */}
+      {/* The highlighted search bar was already removed in the previous turn, so no changes needed here. */}
       {filteredProducts.length === 0 ? (
         <div className="text-center text-gray-600 text-xl py-20">
           No products found matching your criteria.
@@ -540,7 +528,7 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
   );
 };
 
-// Product Detail Page Component
+// Product Detail Page Component (remains the same as previous correction)
 const ProductDetailPage = ({ productId, products, onAddToCart, onNavigate }) => {
   const product = products.find((p) => p._id === productId);
 
@@ -634,7 +622,7 @@ const ProductDetailPage = ({ productId, products, onAddToCart, onNavigate }) => 
       );
     };
 
-    // Cart Page Component - UPDATED to allow proceeding to Shipping
+    // Cart Page Component - UPDATED to allow proceeding to Shipping (remains the same as previous correction)
     const CartPage = ({ onNavigate }) => {
       const { cartItems, updateQuantity, removeFromCart, clearCart } = useContext(CartContext);
 
@@ -776,7 +764,7 @@ const ProductDetailPage = ({ productId, products, onAddToCart, onNavigate }) => 
       );
     };
 
-    // --- Carousel Component ---
+    // --- Carousel Component --- (remains the same)
 const ProductImageCarousel = ({ products }) => {
   const images = products
     .filter(p => p.imageUrl)
@@ -809,7 +797,7 @@ const ProductImageCarousel = ({ products }) => {
   );
 };
 
-// Helper component to render the correct page based on current page state
+// Helper component to render the correct page based on current page state (remains the same as previous correction)
 function PageContent({
       currentPage,
       products,
@@ -821,9 +809,9 @@ function PageContent({
       setError,
       setProducts,
       searchQuery,
-      setSearchQuery, // <-- Add this here
+      setSearchQuery,
     }) {
-      const { addToCart } = useContext(CartContext); // Still using CartContext here
+      const { addToCart } = useContext(CartContext);
 
       if (loading) {
         return (
@@ -923,7 +911,7 @@ function PageContent({
       }
     }
 
-    // Main App Component
+    // Main App Component (remains the same as previous correction)
     export default function App() {
       const [currentPage, setCurrentPage] = useState('home');
       const [selectedProductId, setSelectedProductId] = useState(null);
@@ -971,7 +959,7 @@ function PageContent({
                 onNavigate={navigateTo}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
-                onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} // Pass toggle function
+                onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               />
               <MobileSidebar
                 isOpen={isMobileMenuOpen}
@@ -991,7 +979,7 @@ function PageContent({
                   setError={setError}
                   setProducts={setProducts}
                   searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery} // <-- Add this line
+                  setSearchQuery={setSearchQuery}
                 />
               </main>
               <Footer />
