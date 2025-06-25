@@ -1,6 +1,6 @@
 // client/src/services/authService.js
 
-const API_URL = 'http://localhost:5000/api/users/'; // Base URL for user authentication endpoints
+const API_URL = 'https://e-commerce-slp6.onrender.com/api/users/'; // Base URL for user authentication endpoints
 
 /**
  * Registers a new user.
