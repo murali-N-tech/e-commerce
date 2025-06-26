@@ -1,6 +1,7 @@
-// client/src/pages/RegisterPage.jsx
-
 import React, { useState, useContext, useEffect } from 'react';
+// IMPORTANT: Please verify this path. If this component is at 'client/src/pages/RegisterPage.jsx',
+// then 'AuthContext.jsx' should be located at 'client/src/context/AuthContext.jsx'.
+// Double-check the exact file name and case-sensitivity on your file system.
 import AuthContext from '../context/AuthContext.jsx';
 import { User, Mail, Lock, CheckCircle, Loader } from 'lucide-react';
 
@@ -51,10 +52,11 @@ const RegisterPage = ({ onNavigate }) => {
         <form onSubmit={submitHandler} className="space-y-4 sm:space-y-6">
           <div className="relative">
             <User size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            {/* Added text-gray-800 to make input text visible against dark background */}
             <input
               type="text"
               placeholder="Full Name"
-              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 placeholder-gray-500" // Added placeholder-gray-500
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-800 placeholder-gray-500"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -62,10 +64,11 @@ const RegisterPage = ({ onNavigate }) => {
           </div>
           <div className="relative">
             <Mail size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            {/* Added text-gray-800 to make input text visible against dark background */}
             <input
               type="email"
               placeholder="Email Address"
-              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 placeholder-gray-500" // Added placeholder-gray-500
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-800 placeholder-gray-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -73,10 +76,11 @@ const RegisterPage = ({ onNavigate }) => {
           </div>
           <div className="relative">
             <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            {/* Added text-gray-800 to make input text visible against dark background */}
             <input
               type="password"
               placeholder="Password"
-              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 placeholder-gray-500" // Added placeholder-gray-500
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-800 placeholder-gray-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -84,10 +88,11 @@ const RegisterPage = ({ onNavigate }) => {
           </div>
           <div className="relative">
             <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            {/* Added text-gray-800 to make input text visible against dark background */}
             <input
               type="password"
               placeholder="Confirm Password"
-              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 placeholder-gray-500" // Added placeholder-gray-500
+              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-gray-800 placeholder-gray-500"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
