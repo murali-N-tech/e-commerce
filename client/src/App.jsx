@@ -909,7 +909,7 @@ const ProductDetailPage = ({ productId, products, onAddToCart, onNavigate }) => 
         case 'adminUsers':
             return <ManageUsersPage />;
         case 'adminOrders':
-            return <AdminOrdersPage />;
+            return <AdminOrdersPage onNavigate={navigateTo} />;
         case 'adminReports':
             return <SalesReportsPage />;
         default:
