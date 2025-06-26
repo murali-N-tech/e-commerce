@@ -341,7 +341,7 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
             <div className="hidden md:flex items-center space-x-2">
               <button
                 className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors min-w-max ${
-                  currentPage === 'login' ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-700 text-indigo-100'
+                  currentPage === 'login' ? 'bg-indigo-800 text-white' : 'bg-white text-indigo-700 hover:bg-indigo-700 hover:text-white'
                 }`}
                 onClick={() => onNavigate('login')}
               >
@@ -350,7 +350,7 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
               </button>
               <button
                 className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors min-w-max ${
-                  currentPage === 'register' ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-700 text-indigo-100'
+                  currentPage === 'register' ? 'bg-indigo-800 text-white' : 'bg-white text-indigo-700 hover:bg-indigo-700 hover:text-white'
                 }`}
                 onClick={() => onNavigate('register')}
               >
