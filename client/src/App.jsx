@@ -93,7 +93,7 @@ const MobileSidebar = ({ isOpen, onClose, onNavigate, currentPage }) => {
         } md:hidden`}
       >
         <div className="p-4 border-b border-indigo-700 flex justify-between items-center">
-          <h2 className="text-2xl font-bold">Quick-Basket</h2>
+          <h2 className="text-2xl font-bold">IndiaKart</h2>
           <button onClick={onClose} className="text-white hover:text-indigo-200">
             <X size={28} />
           </button>
@@ -389,7 +389,7 @@ const Footer = () => (
       </div>
     </div>
     <div className="border-t border-gray-700 mt-8 pt-6 text-center text-sm">
-      © {new Date().getFullYear()} Quick-basket. All rights reserved.
+      © {new Date().getFullYear()} IndiaKart. All rights reserved.
     </div>
   </footer>
 );
