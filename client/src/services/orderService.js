@@ -40,7 +40,7 @@ const createOrder = async (orderData, token) => {
  */
 const getOrderDetails = async (orderId, token) => {
   try {
-    const response = await fetch(`${API_URL}${orderId}`, {
+    const response = await fetch(`${API_URL}/${orderId}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`, // Include the user's token
