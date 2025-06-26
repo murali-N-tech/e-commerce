@@ -401,7 +401,7 @@ const HomePage = ({ products, onAddToCart, onViewDetail, onNavigate, searchQuery
     product.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const featuredProducts = filteredProducts.slice(0, 3);
+  const featuredProducts = filteredProducts.slice(0, 4);
   return (
     <div className="container mx-auto px-6 py-12">
       <section className="relative rounded-2xl p-10 md:p-16 text-center shadow-xl mb-16 overflow-hidden" style={{ minHeight: 350 }}>
