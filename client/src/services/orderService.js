@@ -154,7 +154,7 @@ const getAllOrders = async (token) => {
  */
 const deliverOrder = async (orderId, token) => {
   try {
-    const response = await fetch(`${API_URL}${orderId}/deliver`, {
+    const response = await fetch(`${API_URL}/${orderId}/deliver`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
