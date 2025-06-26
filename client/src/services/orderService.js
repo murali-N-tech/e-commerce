@@ -97,7 +97,7 @@ const getMyOrders = async (token) => {
  */
 const payOrder = async (orderId, paymentResult, token) => {
   try {
-    const response = await fetch(`${API_URL}${orderId}/pay`, {
+    const response = await fetch(`${API_URL}/${orderId}/pay`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
