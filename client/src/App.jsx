@@ -1,10 +1,10 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { Search, ShoppingCart, Home, Store, Package, ShoppingBag, User, LogOut, Settings, ListOrdered, X, Menu } from 'lucide-react'; // Added Menu for mobile sidebar
+import { Search, ShoppingCart, Home, Store, Package, ShoppingBag, User, LogOut, Settings, ListOrdered, X, Menu } from 'lucide-react';
 
 // Import AuthContext and AuthProvider
 import AuthContext, { AuthProvider } from './context/AuthContext.jsx';
 // Import CartContext and CartProvider from the NEW dedicated file
-import  CartContext,{ CartProvider } from './context/CartContext.jsx'; // Corrected import path
+import CartContext, { CartProvider } from './context/CartContext.jsx';
 
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
@@ -21,11 +21,8 @@ import AdminOrdersPage from './pages/AdminOrdersPage.jsx';
 import SalesReportsPage from './pages/SalesReportsPage.jsx';
 
 import productService from './services/productService.js';
-// orderService import is not needed in App.jsx directly, but for PageContent and other pages
-// import orderService from './services/orderService.js'; // Removed as it's not directly used here
 
-
-// Product Card Component (Corrected for button placement)
+// Product Card Component
 const ProductCard = ({ product, onAddToCart, onViewDetail }) => (
   <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col transform hover:-translate-y-1">
     <div className="relative overflow-hidden">
@@ -44,17 +41,16 @@ const ProductCard = ({ product, onAddToCart, onViewDetail }) => (
         </button>
       </div>
     </div>
-    <div className="p-5 flex flex-col flex-grow"> {/* Use flex-col and flex-grow here */}
+    <div className="p-5 flex flex-col flex-grow">
       <h3 className="text-xl font-bold text-gray-800 mb-2 truncate">{product.name}</h3>
       <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
-      {/* This div will push itself to the bottom using mt-auto */}
       <div className="flex flex-col mt-auto pt-3 border-t border-gray-100">
-        <span className="text-2xl font-extrabold text-indigo-700 mb-3"> {/* Added mb-3 for spacing */}
+        <span className="text-2xl font-extrabold text-indigo-700 mb-3">
           ₹{product.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
         </span>
         <button
           onClick={() => onAddToCart(product)}
-          className="bg-indigo-600 text-white px-5 py-2 rounded-full shadow-md hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center space-x-2 w-full" // Added w-full and justify-center
+          className="bg-indigo-600 text-white px-5 py-2 rounded-full shadow-md hover:bg-indigo-700 transition-colors duration-200 flex items-center justify-center space-x-2 w-full"
         >
           <ShoppingCart size={18} />
           <span>Add to Cart</span>
@@ -64,7 +60,7 @@ const ProductCard = ({ product, onAddToCart, onViewDetail }) => (
   </div>
 );
 
-// Mobile Sidebar Component (remains the same as previous correction)
+// Mobile Sidebar Component
 const MobileSidebar = ({ isOpen, onClose, onNavigate, currentPage }) => {
   const { user, isAuthenticated, logout } = useContext(AuthContext);
   const isAdmin = isAuthenticated && user && user.role === 'admin';
@@ -102,86 +98,102 @@ const MobileSidebar = ({ isOpen, onClose, onNavigate, currentPage }) => {
             <X size={28} />
           </button>
         </div>
-        <nav className="flex flex-col p-4 space-y-3">
+
+        {/* User Info */}
+        {isAuthenticated && (
+          <div className="p-4 border-b border-indigo-700">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
+                {user.name.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <p className="font-medium">{user.name}</p>
+                <p className="text-sm text-indigo-200">{user.email}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <nav className="flex flex-col p-4 space-y-2">
           <button
-            className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+            className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
               currentPage === 'home' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
             }`}
             onClick={() => handleNavigateAndClose('home')}
           >
             <Home size={20} />
-            <span>Home</span>
+            <span className="text-lg">Home</span>
           </button>
           <button
-            className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+            className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
               currentPage === 'products' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
             }`}
             onClick={() => handleNavigateAndClose('products')}
           >
             <Store size={20} />
-            <span>Products</span>
+            <span className="text-lg">Products</span>
           </button>
           {isAuthenticated && (
             <button
-              className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                 currentPage === 'myOrders' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
               }`}
               onClick={() => handleNavigateAndClose('myOrders')}
             >
               <ListOrdered size={20} />
-              <span>Orders</span>
+              <span className="text-lg">Orders</span>
             </button>
           )}
           {isAdmin && (
             <button
-              className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                 currentPage === 'adminDashboard' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
               }`}
               onClick={() => handleNavigateAndClose('adminDashboard')}
             >
               <Settings size={20} />
-              <span>Admin Dashboard</span>
+              <span className="text-lg">Admin Dashboard</span>
             </button>
           )}
-          <div className="border-t border-indigo-700 my-3"></div>
+          <div className="border-t border-indigo-700 my-2"></div>
           {isAuthenticated ? (
             <>
               <button
-                className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                   currentPage === 'profile' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
                 }`}
                 onClick={() => handleNavigateAndClose('profile')}
               >
                 <User size={20} />
-                <span>Profile ({user.name.split(' ')[0]})</span>
+                <span className="text-lg">Profile</span>
               </button>
               <button
-                className="flex items-center space-x-3 px-4 py-2 rounded-lg text-left bg-red-600 hover:bg-red-700 transition-colors"
+                className="flex items-center space-x-3 px-4 py-3 rounded-lg text-left bg-red-600 hover:bg-red-700 transition-colors"
                 onClick={handleLogoutAndClose}
               >
                 <LogOut size={20} />
-                <span>Logout</span>
+                <span className="text-lg">Logout</span>
               </button>
             </>
           ) : (
             <>
               <button
-                className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                   currentPage === 'login' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
                 }`}
                 onClick={() => handleNavigateAndClose('login')}
               >
                 <User size={20} />
-                <span>Login</span>
+                <span className="text-lg">Login</span>
               </button>
               <button
-                className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-left transition-colors ${
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                   currentPage === 'register' ? 'bg-indigo-700' : 'hover:bg-indigo-700'
                 }`}
                 onClick={() => handleNavigateAndClose('register')}
               >
                 <User size={20} />
-                <span>Register</span>
+                <span className="text-lg">Register</span>
               </button>
             </>
           )}
@@ -191,8 +203,7 @@ const MobileSidebar = ({ isOpen, onClose, onNavigate, currentPage }) => {
   );
 };
 
-
-// Header Component - UPDATED for Auth and Admin/MyOrders Links and Mobile Menu (remains the same as previous correction)
+// Header Component - Fixed for single line navigation
 const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggleMobileMenu }) => {
   const { cartItems } = useContext(CartContext);
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -216,16 +227,18 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
           <Menu size={28} />
         </button>
 
+        {/* Logo */}
         <h1
-          className="text-2xl sm:text-3xl font-extrabold cursor-pointer hover:text-indigo-200 transition-colors"
+          className="text-2xl sm:text-3xl font-extrabold cursor-pointer hover:text-indigo-200 transition-colors min-w-max"
           onClick={() => onNavigate('home')}
         >
-            Quick-Basket
+          IndiaKart
         </h1>
+
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex flex-wrap items-center gap-2 sm:gap-4 justify-center">
+        <nav className="hidden md:flex items-center space-x-2 lg:space-x-4 mx-4">
           <button
-            className={`flex items-center space-x-2 text-lg font-semibold px-6 py-2 rounded-full transition-colors border-2 ${
+            className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors border-2 min-w-max ${
               currentPage === 'home'
                 ? 'bg-white text-indigo-800 border-indigo-700 shadow'
                 : 'bg-indigo-700 text-white border-transparent hover:bg-indigo-800'
@@ -236,7 +249,7 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
             <span>Home</span>
           </button>
           <button
-            className={`flex items-center space-x-2 text-lg font-semibold px-6 py-2 rounded-full transition-colors border-2 ${
+            className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors border-2 min-w-max ${
               currentPage === 'products'
                 ? 'bg-white text-indigo-800 border-indigo-700 shadow'
                 : 'bg-indigo-700 text-white border-transparent hover:bg-indigo-800'
@@ -248,7 +261,7 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
           </button>
           {isAuthenticated && (
             <button
-              className={`flex items-center space-x-2 text-lg font-semibold px-6 py-2 rounded-full transition-colors border-2 ${
+              className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors border-2 min-w-max ${
                 currentPage === 'myOrders'
                   ? 'bg-white text-indigo-800 border-indigo-700 shadow'
                   : 'bg-indigo-700 text-white border-transparent hover:bg-indigo-800'
@@ -261,7 +274,7 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
           )}
           {isAdmin && (
             <button
-              className={`flex items-center space-x-2 text-lg font-semibold px-6 py-2 rounded-full transition-colors border-2 ${
+              className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors border-2 min-w-max ${
                 currentPage === 'adminDashboard'
                   ? 'bg-white text-indigo-800 border-indigo-700 shadow'
                   : 'bg-indigo-700 text-white border-transparent hover:bg-indigo-800'
@@ -273,9 +286,11 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
             </button>
           )}
         </nav>
-        <div className="flex items-center gap-2 sm:gap-6">
-          {/* Search Bar - visible on all screen sizes but layout adjusts */}
-          <div className="relative w-full sm:w-64">
+
+        {/* Search and User Controls */}
+        <div className="flex items-center gap-2 sm:gap-4 flex-1 md:flex-none justify-end">
+          {/* Search Bar */}
+          <div className="relative w-full max-w-xs">
             <input
               type="text"
               placeholder="Search products..."
@@ -285,6 +300,8 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
             />
             <Search size={20} className="absolute right-3 top-1/2 -translate-y-1/2 text-indigo-300" />
           </div>
+
+          {/* Cart Button */}
           <button
             className="relative p-3 rounded-full bg-indigo-800 hover:bg-indigo-700 transition-colors"
             onClick={() => onNavigate('cart')}
@@ -299,7 +316,7 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
 
           {/* Authentication Links (Desktop Only) */}
           {isAuthenticated ? (
-            <div className="hidden md:flex items-center space-x-3">
+            <div className="hidden md:flex items-center space-x-2">
               <span className="text-indigo-100 hidden lg:inline-block">Hello, {user.name.split(' ')[0]}</span>
               <button
                 className="relative p-3 rounded-full bg-indigo-800 hover:bg-indigo-700 transition-colors group"
@@ -307,7 +324,7 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
               >
                 <User size={24} />
                 <span className="absolute left-1/2 -bottom-8 -translate-x-1/2 px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                    Profile
+                  Profile
                 </span>
               </button>
               <button
@@ -316,14 +333,14 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
               >
                 <LogOut size={24} />
                 <span className="absolute left-1/2 -bottom-8 -translate-x-1/2 px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                        Logout
+                  Logout
                 </span>
               </button>
             </div>
           ) : (
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-2">
               <button
-                className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors ${
+                className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors min-w-max ${
                   currentPage === 'login' ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-700 text-indigo-100'
                 }`}
                 onClick={() => onNavigate('login')}
@@ -332,7 +349,7 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
                 <span>Login</span>
               </button>
               <button
-                className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors ${
+                className={`flex items-center space-x-2 text-lg font-semibold px-4 py-2 rounded-full transition-colors min-w-max ${
                   currentPage === 'register' ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-700 text-indigo-100'
                 }`}
                 onClick={() => onNavigate('register')}
@@ -348,12 +365,12 @@ const Header = ({ currentPage, onNavigate, searchQuery, setSearchQuery, onToggle
   );
 };
 
-// Footer Component (remains the same)
+// Footer Component
 const Footer = () => (
   <footer className="bg-gray-800 text-gray-300 py-10 mt-20">
     <div className="container mx-auto px-2 sm:px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
-        <h4 className="text-xl font-bold text-white mb-4">Quick-Basket</h4>
+        <h4 className="text-xl font-bold text-white mb-4">IndiaKart</h4>
         <p className="text-sm">Your one-stop shop for all your needs. Quality products, excellent service.</p>
       </div>
       <div>
@@ -377,7 +394,7 @@ const Footer = () => (
   </footer>
 );
 
-// Homepage Component (remains the same as previous correction)
+// Homepage Component
 const HomePage = ({ products, onAddToCart, onViewDetail, onNavigate, searchQuery }) => {
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -406,16 +423,20 @@ const HomePage = ({ products, onAddToCart, onViewDetail, onNavigate, searchQuery
     </section>
       <section className="mb-16">
         <h3 className="text-4xl font-bold text-gray-800 mb-10 text-center">Featured Products</h3>
-        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-          {products.length > 0 ? featuredProducts.map((product) => (
-            <ProductCard
-              key={product._id}
-              product={product}
-              onAddToCart={onAddToCart}
-              onViewDetail={onViewDetail}
-            />
-          )) : <p className="text-gray-600 text-center col-span-full">No products to display.</p>}
-        </div>
+        {featuredProducts.length === 0 ? (
+          <p className="text-gray-600 text-center text-lg">No featured products to display at the moment.</p>
+        ) : (
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+            {featuredProducts.map((product) => (
+              <ProductCard
+                key={product._id}
+                product={product}
+                onAddToCart={onAddToCart}
+                onViewDetail={onViewDetail}
+              />
+            ))}
+          </div>
+        )}
         <div className="text-center mt-12">
           <button
             onClick={() => onNavigate('products')}
@@ -447,7 +468,7 @@ const HomePage = ({ products, onAddToCart, onViewDetail, onNavigate, searchQuery
   );
 };
 
-// Product Listing Page Component (remains the same as previous correction)
+// Product Listing Page Component
 const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, setSearchQuery }) => {
   const [sortOrder, setSortOrder] = useState('default');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -507,7 +528,6 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
           </select>
         </div>
       </div>
-      {/* The highlighted search bar was already removed in the previous turn, so no changes needed here. */}
       {filteredProducts.length === 0 ? (
         <div className="text-center text-gray-600 text-xl py-20">
           No products found matching your criteria.
@@ -528,7 +548,7 @@ const ProductListingPage = ({ products, onAddToCart, onViewDetail, searchQuery, 
   );
 };
 
-// Product Detail Page Component (remains the same as previous correction)
+// Product Detail Page Component
 const ProductDetailPage = ({ productId, products, onAddToCart, onNavigate }) => {
   const product = products.find((p) => p._id === productId);
 
@@ -622,7 +642,7 @@ const ProductDetailPage = ({ productId, products, onAddToCart, onNavigate }) => 
       );
     };
 
-    // Cart Page Component - UPDATED to allow proceeding to Shipping (remains the same as previous correction)
+    // Cart Page Component
     const CartPage = ({ onNavigate }) => {
       const { cartItems, updateQuantity, removeFromCart, clearCart } = useContext(CartContext);
 
@@ -632,11 +652,8 @@ const ProductDetailPage = ({ productId, products, onAddToCart, onNavigate }) => 
       const tax = subtotal * taxRate;
       const total = subtotal + shipping + tax;
 
-      // Handle checkout now navigates to Shipping Page
       const handleCheckout = () => {
         if (cartItems.length === 0) {
-            // No items to checkout, maybe show a message or do nothing
-            // Using a custom message box instead of alert()
             const messageBox = document.createElement('div');
             messageBox.className = "fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50";
             messageBox.innerHTML = `
@@ -649,7 +666,7 @@ const ProductDetailPage = ({ productId, products, onAddToCart, onNavigate }) => 
             document.body.appendChild(messageBox);
             return;
         }
-        onNavigate('shipping'); // Navigate to the shipping page
+        onNavigate('shipping');
       };
 
       const QuantityControl = ({ item }) => (
@@ -764,41 +781,40 @@ const ProductDetailPage = ({ productId, products, onAddToCart, onNavigate }) => 
       );
     };
 
-    // --- Carousel Component --- (remains the same)
-const ProductImageCarousel = ({ products }) => {
-  const images = products
-    .filter(p => p.imageUrl)
-    .slice(0, 5)
-    .map(p => ({ src: p.imageUrl, alt: p.name }));
+    // Product Image Carousel Component
+    const ProductImageCarousel = ({ products }) => {
+      const images = products
+        .filter(p => p.imageUrl)
+        .slice(0, 5)
+        .map(p => ({ src: p.imageUrl, alt: p.name }));
 
-  const [current, setCurrent] = useState(0);
+      const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
-    if (images.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, [images.length]);
+      useEffect(() => {
+        if (images.length <= 1) return;
+        const interval = setInterval(() => {
+          setCurrent((prev) => (prev + 1) % images.length);
+        }, 2500);
+        return () => clearInterval(interval);
+      }, [images.length]);
 
-  if (images.length === 0) return null;
+      if (images.length === 0) return null;
 
-  return (
-    <div className="absolute inset-0 w-full h-full z-0 overflow-hidden rounded-2xl">
-      <img
-        src={images[current].src}
-        alt={images[current].alt}
-        className="w-full h-full object-cover object-center transition-all duration-700"
-        style={{ minHeight: 350, maxHeight: 400 }}
-      />
-      {/* Optional: dark overlay for text readability */}
-      <div className="absolute inset-0 bg-black/40" />
-    </div>
-  );
-};
+      return (
+        <div className="absolute inset-0 w-full h-full z-0 overflow-hidden rounded-2xl">
+          <img
+            src={images[current].src}
+            alt={images[current].alt}
+            className="w-full h-full object-cover object-center transition-all duration-700"
+            style={{ minHeight: 350, maxHeight: 400 }}
+          />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+      );
+    };
 
-// Helper component to render the correct page based on current page state (remains the same as previous correction)
-function PageContent({
+    // Helper component to render the correct page based on current page state
+    function PageContent({
       currentPage,
       products,
       selectedProductId,
@@ -911,33 +927,30 @@ function PageContent({
       }
     }
 
-    // Main App Component (remains the same as previous correction)
+    // Main App Component
     export default function App() {
       const [currentPage, setCurrentPage] = useState('home');
       const [selectedProductId, setSelectedProductId] = useState(null);
-      const [products, setProducts] = useState([]); // Not null or undefined!
+      const [products, setProducts] = useState([]);
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
       const [searchQuery, setSearchQuery] = useState('');
-      const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // New state for mobile menu
+      const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-      // Function to simulate navigation
       const navigateTo = (page, productId = null) => {
         setCurrentPage(page);
         setSelectedProductId(productId);
-        if (isMobileMenuOpen) { // Close mobile menu on navigation
+        if (isMobileMenuOpen) {
             setIsMobileMenuOpen(false);
         }
       };
 
-      // Fetch products from the backend API on component mount
       useEffect(() => {
         const fetchAllProducts = async () => {
           setLoading(true);
           setError(null);
           try {
             const data = await productService.getProducts();
-            // Ensure products is always an array
             setProducts(Array.isArray(data) ? data : (data.products || []));
           } catch (err) {
             setError(err.message);
