@@ -9,7 +9,7 @@ const getAllUsers = async (token) => {
 };
 
 const deleteUser = async (userId, token) => {
-  const res = await fetch(`${API_URL}/users/${userId}`, {
+  const res = await fetch(`${API_URL}/${userId}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` }
   });
