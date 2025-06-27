@@ -1,0 +1,17 @@
+steps:
+# 1. Build the Docker image from /server
+- name: 'gcr.io/cloud-builders/docker'
+  dir: 'server'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/server', '.']
+
+# 2. Deploy to Cloud Run
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    [
+      'run', 'deploy', 'server-service',
+      '--image', 'gcr.io/$PROJECT_ID/server',
+      '--platform', 'managed',
+      '--region', 'us-central1',
+      '--allow-unauthenticated',
+      '--set-env-vars', 'MONGO_URI=mongodb+srv://murali:murali123@cluster0.ogznysk.mongodb.net/ecommerce_db?retryWrites=true&w=majority&appName=Cluster0,JWT_SECRET=your-jwt-secret'
+    ]
