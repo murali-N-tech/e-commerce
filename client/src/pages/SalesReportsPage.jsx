@@ -49,7 +49,7 @@ const SalesReportsPage = () => {
 
   return (
     <div className="container mx-auto px-2 sm:px-4 md:px-6 py-6 md:py-12">
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 flex items-center justify-center">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 flex items-center justify-center text-violet-700">
         <BarChart2 className="mr-3" /> Sales Reports
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
