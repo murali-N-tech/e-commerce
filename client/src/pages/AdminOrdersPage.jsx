@@ -119,14 +119,14 @@ const AdminOrdersPage = ({ onNavigate }) => {
             <tbody className="bg-white divide-y divide-gray-200">
               {orders.map(order => (
                 <tr key={order._id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]">{order._id}</td>
-                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{order.user?.name || 'N/A'}</td>
-                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}</td>
-                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap">₹{order.totalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-center">
+                  <td className="px-4 py-3 text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]">{order._id}</td>
+                  <td className="px-4 py-3 text-gray-800 whitespace-nowrap">{order.user?.name || 'N/A'}</td>
+                  <td className="px-4 py-3 text-gray-800 whitespace-nowrap">{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}</td>
+                  <td className="px-4 py-3 text-gray-800 whitespace-nowrap">₹{order.totalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+                  <td className="px-4 py-3 text-gray-800 whitespace-nowrap text-center">
                     {order.isPaid ? <CheckCircle size={18} className="text-green-600 mx-auto" /> : <XCircle size={18} className="text-red-600 mx-auto" />}
                   </td>
-                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-center">
+                  <td className="px-4 py-3 text-gray-800 whitespace-nowrap text-center">
                     {order.isDelivered
                       ? <CheckCircle size={18} className="text-green-600 mx-auto" />
                       : (
@@ -140,7 +140,7 @@ const AdminOrdersPage = ({ onNavigate }) => {
                       )
                     }
                   </td>
-                  <td className="px-2 sm:px-4 py-2 whitespace-nowrap text-right">
+                  <td className="px-4 py-3 text-gray-800 whitespace-nowrap text-right">
                     <button
                       onClick={() => onNavigate('orderDetail', order._id)}
                       className="text-indigo-600 hover:text-indigo-900 p-1 sm:p-2 rounded-full hover:bg-indigo-100 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
