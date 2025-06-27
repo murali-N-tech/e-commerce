@@ -112,7 +112,7 @@ const ManageUsersPage = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {users.map(u => (
-                <tr key={u._id} className="hover:bg-gray-50 transition-colors">
+                <tr key={u._id} className="hover:bg-gray-50 transition-colors text-gray-800">
                   <td className="px-2 sm:px-4 py-2 whitespace-nowrap overflow-hidden text-ellipsis max-w-[100px]">{u._id}</td>
                   <td className="px-2 sm:px-4 py-2 whitespace-nowrap">{u.name}</td>
                   <td className="px-2 sm:px-4 py-2 whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">{u.email}</td>
